@@ -8,6 +8,9 @@ scikit_learn_data/
 .ipynb_checkpoints/
 
 # Large models or serialized checkpoints (Avoids hitting GitHub file size limits)
+models/*
+!models/.gitkeep
+test_data/
 *.pt
 *.pth
 *.pkl
