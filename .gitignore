@@ -1,0 +1,38 @@
+# ==============================================================================
+# MACHINE LEARNING & DATA CONFIGURATION
+# ==============================================================================
+# Data / cache folders (Prevents repo bloat from large datasets like LFW)
+data/
+scikit_learn_data/
+*.cache
+.ipynb_checkpoints/
+
+# Large models or serialized checkpoints (Avoids hitting GitHub file size limits)
+*.pt
+*.pth
+*.pkl
+*.joblib
+
+# ==============================================================================
+# PYTHON & ENVIRONMENT CONFIGURATION
+# ==============================================================================
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# ==============================================================================
+# OS / IDE ARTIFACTS
+# ==============================================================================
+# IDE configurations
+.vscode/
+.idea/
+
+# OS-generated files
+.DS_Store
+Thumbs.db
