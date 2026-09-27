@@ -1,0 +1,16 @@
+# Core Machine Learning & Scientific Computing
+numpy
+scipy
+scikit-learn
+pandas
+joblib
+
+# Computer Vision & Visualization
+opencv-python
+matplotlib
+pillow
+
+# Deep Learning & FaceNet Embeddings
+torch
+torchvision
+facenet-pytorch
