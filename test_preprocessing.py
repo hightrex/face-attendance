@@ -1,6 +1,14 @@
+import numpy as np
 import matplotlib.pyplot as plt
 
-from smoke_test_data import X_train, X_val, X_test
+from smoke_test_data import (
+    X_train,
+    y_train,
+    X_val,
+    y_val,
+    X_test,
+    y_test
+)
 
 from src.classical import (
     preprocess_image,
@@ -8,9 +16,9 @@ from src.classical import (
     extract_hog_features,
     flatten_images,
     fit_pca_features,
-    transform_pca_features
+    transform_pca_features,
+    ClassicalModel
 )
-
 # --------------------------------------------------
 # TEST 1: Preprocess one image
 # --------------------------------------------------
@@ -197,6 +205,160 @@ print("Variance explained by PCA:")
 print(pca.explained_variance_ratio_.sum())
 
 print()
+
+# --------------------------------------------------
+# TEST 8: SVM CLASSIFIER
+# --------------------------------------------------
+
+print()
+print("TEST 8: SVM CLASSIFIER")
+print("----------------------")
+
+
+# --------------------------------------------------
+# HOG + SVM
+# --------------------------------------------------
+
+print()
+print("HOG + SVM")
+
+hog_model = ClassicalModel(
+    feature_type="hog",
+    image_size=(64, 64),
+    C=10.0
+)
+
+hog_model.fit(
+    X_train,
+    y_train
+)
+
+hog_probabilities = hog_model.predict_proba(
+    X_val
+)
+
+print("Classes:")
+print(hog_model.classes_)
+
+print()
+
+print("Probability table shape:")
+print(hog_probabilities.shape)
+
+print()
+
+print("First validation probability row:")
+print(hog_probabilities[0])
+
+
+# Turn probabilities into predicted names.
+hog_predictions = np.array(
+    hog_model.classes_
+)[
+    np.argmax(
+        hog_probabilities,
+        axis=1
+    )
+]
+
+hog_accuracy = np.mean(
+    hog_predictions == y_val
+)
+
+print()
+
+print("HOG validation predictions:")
+print(hog_predictions)
+
+print()
+
+print("HOG validation accuracy:")
+print(hog_accuracy)
+
+
+# Check that the output has:
+# 9 validation images and 3 possible people.
+assert hog_probabilities.shape == (9, 3)
+
+# Each probability row should add up to approximately 1.
+assert np.allclose(
+    hog_probabilities.sum(axis=1),
+    1.0
+)
+
+
+# --------------------------------------------------
+# PCA + SVM
+# --------------------------------------------------
+
+print()
+print("PCA + SVM")
+
+pca_model = ClassicalModel(
+    feature_type="pca",
+    image_size=(64, 64),
+    C=10.0,
+    pca_components=20
+)
+
+pca_model.fit(
+    X_train,
+    y_train
+)
+
+pca_probabilities = pca_model.predict_proba(
+    X_val
+)
+
+print("Classes:")
+print(pca_model.classes_)
+
+print()
+
+print("Probability table shape:")
+print(pca_probabilities.shape)
+
+print()
+
+print("First validation probability row:")
+print(pca_probabilities[0])
+
+
+# Turn probabilities into predicted names.
+pca_predictions = np.array(
+    pca_model.classes_
+)[
+    np.argmax(
+        pca_probabilities,
+        axis=1
+    )
+]
+
+pca_accuracy = np.mean(
+    pca_predictions == y_val
+)
+
+print()
+
+print("PCA validation predictions:")
+print(pca_predictions)
+
+print()
+
+print("PCA validation accuracy:")
+print(pca_accuracy)
+
+
+assert pca_probabilities.shape == (9, 3)
+
+assert np.allclose(
+    pca_probabilities.sum(axis=1),
+    1.0
+)
+
+
+print()
+print("All SVM tests passed successfully!")
 
 
 # Automatic PCA checks

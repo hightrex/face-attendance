@@ -3,21 +3,21 @@ import numpy as np
 
 def make_image(person, size=80, noise=0.05, rng=None):
     """
-    Create a simple fake RGB image for testing.
+    Create one simple synthetic RGB image.
 
     person:
-        0 = vertical shape on the left
-        1 = vertical shape on the right
-        2 = horizontal shape in the middle
+        0 = vertical bar on the left
+        1 = vertical bar on the right
+        2 = horizontal bar in the middle
     """
 
     if rng is None:
         rng = np.random.default_rng()
 
-    # Start with a black grayscale image
+    # Start with a black grayscale image.
     image = np.zeros((size, size), dtype=np.float32)
 
-    # Give each fake person a different pattern
+    # Give each fake person a different pattern.
     if person == 0:
         image[15:65, 15:25] = 1.0
 
@@ -27,21 +27,35 @@ def make_image(person, size=80, noise=0.05, rng=None):
     elif person == 2:
         image[35:45, 15:65] = 1.0
 
-    # Add small random noise so every image is slightly different
-    image += rng.normal(0, noise, image.shape)
+    else:
+        raise ValueError("person must be 0, 1, or 2")
 
-    # Keep pixel values between 0 and 1
-    image = np.clip(image, 0, 1)
+    # Add small random noise.
+    image += rng.normal(
+        0,
+        noise,
+        image.shape
+    )
 
-    # Convert grayscale image into RGB
-    image_rgb = np.stack([image, image, image], axis=-1)
+    # Keep pixel values between 0 and 1.
+    image = np.clip(
+        image,
+        0,
+        1
+    )
+
+    # Convert grayscale into RGB.
+    image_rgb = np.stack(
+        [image, image, image],
+        axis=-1
+    )
 
     return image_rgb
 
 
 def make_dataset(images_per_person, seed):
     """
-    Create a dataset containing three fake people.
+    Create a synthetic dataset for three fake people.
     """
 
     rng = np.random.default_rng(seed)
@@ -49,7 +63,11 @@ def make_dataset(images_per_person, seed):
     images = []
     labels = []
 
-    names = ["Person_A", "Person_B", "Person_C"]
+    names = [
+        "Person_A",
+        "Person_B",
+        "Person_C"
+    ]
 
     for person_number, person_name in enumerate(names):
 
@@ -65,25 +83,39 @@ def make_dataset(images_per_person, seed):
             images.append(image)
             labels.append(person_name)
 
-    X = np.array(images)
+    X = np.array(
+        images,
+        dtype=np.float32
+    )
+
     y = np.array(labels)
 
     return X, y
 
 
-# -----------------------------
-# Create temporary datasets
-# -----------------------------
+# --------------------------------------------------
+# CREATE SYNTHETIC TRAINING DATA
+# --------------------------------------------------
 
 X_train, y_train = make_dataset(
     images_per_person=10,
     seed=1
 )
 
+
+# --------------------------------------------------
+# CREATE SYNTHETIC VALIDATION DATA
+# --------------------------------------------------
+
 X_val, y_val = make_dataset(
     images_per_person=3,
     seed=2
 )
+
+
+# --------------------------------------------------
+# CREATE SYNTHETIC TEST DATA
+# --------------------------------------------------
 
 X_test, y_test = make_dataset(
     images_per_person=3,
@@ -91,9 +123,9 @@ X_test, y_test = make_dataset(
 )
 
 
-# -----------------------------
-# Display information
-# -----------------------------
+# --------------------------------------------------
+# DISPLAY INFORMATION
+# --------------------------------------------------
 
 print("TRAINING DATA")
 print("X_train shape:", X_train.shape)
