@@ -7,6 +7,7 @@ joblib
 
 # Computer Vision & Visualization
 opencv-python
+scikit-image
 matplotlib
 pillow
 
