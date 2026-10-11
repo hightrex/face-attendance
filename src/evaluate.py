@@ -40,11 +40,12 @@ def evaluate(model, X, y, name="model"):
 
 def plot_confusion_matrix(y_true, y_pred, labels, title, filename):
     """Make a confusion matrix and save it."""
-    cm = confusion_matrix(y_true, y_pred, labels=labels)
-    fig, ax = plt.subplots(figsize=(10, 8))
+    cm = confusion_matrix(y_true, y_pred, labels=labels, normalize="true")
+    fig, ax = plt.subplots(figsize=(14, 12))
     disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=labels)
-    disp.plot(ax=ax, cmap="Blues", xticks_rotation=45, colorbar=False)
+    disp.plot(ax=ax, cmap="Blues", xticks_rotation=90, colorbar=True,include_values=False)
     ax.set_title(title)
+    ax.tick_params(axis="both", labelsize=6)
     plt.tight_layout()
     out = RESULTS_DIR / filename
     fig.savefig(out, dpi=200, bbox_inches="tight")

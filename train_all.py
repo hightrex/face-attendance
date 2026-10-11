@@ -1,8 +1,4 @@
-"""
-train_all.py
-Train both models and save them.
-Hightrex - CSI6209 Assessment 2
-"""
+
 
 from pathlib import Path
 import joblib
