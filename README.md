@@ -45,6 +45,15 @@ pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
+### 4. How to run
+```bash
+# train both models
+python train_all.py
+
+# run final evaluation + create plots
+python run_final.py
+```
+
 ---
 
 ## 📁 Repository Structure
